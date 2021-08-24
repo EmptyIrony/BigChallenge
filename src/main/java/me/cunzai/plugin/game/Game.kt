@@ -1,6 +1,5 @@
 package me.cunzai.plugin.game
 
-import io.izzel.taboolib.kotlin.Tasks
 import io.izzel.taboolib.kotlin.colored
 import io.izzel.taboolib.module.inject.TListener
 import me.cunzai.plugin.BigChallenge
@@ -8,7 +7,6 @@ import me.cunzai.plugin.challenge.Challenge
 import me.cunzai.plugin.challenge.impl.DeadRising
 import me.cunzai.plugin.challenge.impl.FireBall
 import me.cunzai.plugin.challenge.impl.Wither
-import net.minecraft.server.v1_16_R1.Items.*
 import org.bukkit.*
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -20,11 +18,8 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.math.abs
 import kotlin.random.Random
-import kotlin.random.nextInt
 
 
 /*
@@ -91,6 +86,9 @@ object Game: Listener{
 
             Bukkit.getOnlinePlayers().forEach {
                 it.gameMode = GameMode.SPECTATOR
+                it.saturation = 20F
+                it.foodLevel = 20
+                it.health = it.maxHealth
             }
         }
     }
@@ -231,9 +229,8 @@ object Game: Listener{
         if (!location.chunk.isLoaded) {
             location.chunk.load()
         }
-        val highestBlockYAt = location.world!!.getHighestBlockYAt(location) + 1
-        for (index in 0 until highestBlockYAt) {
-            val add = location.clone().add(0.0, -index.toDouble(), 0.0)
+        for (index in 0..256) {
+            val add = location.clone().add(0.0, index.toDouble(), 0.0)
             if (add.block.type != Material.AIR) {
                 add.block.type = Material.AIR
             }
