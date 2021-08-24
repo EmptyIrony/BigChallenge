@@ -1,19 +1,22 @@
-# Building
+# TabooLib SDK
 
-* [Gradle](https://gradle.org/) - Dependency Management
-
-The GradleWrapper in included in this project.
-
-**Windows:**
-
-```
-gradlew.bat clean build
-```
-
-**macOS/Linux:**
-
-```
-./gradlew clean build
+## Settings
+```groovy
+taboolib {
+    tabooLibVersion = '5.63'
+    loaderVersion = '2.12'
+    classifier = null
+    // relocate package
+    relocate('io.izzel.taboolib', 'ink.ptms.taboolib')
+    // built-in
+    builtin = true
+}
 ```
 
-Build artifacts should be found in `./build/libs` folder.
+## Release Source Code
+````groovy
+processResources {
+    from(sourceSets.main.allSource) {
+    exclude 'plugin.yml'
+}
+````
